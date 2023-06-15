@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "961340522382",
+    "project_id": "authenticationwithviewmodel",
+    "storage_bucket": "authenticationwithviewmodel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961340522382:android:dcdcc29e1a3972f8dbaedf",
+        "android_client_info": {
+          "package_name": "com.example.authenticationwithviewmodel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961340522382-kboup8o64s54htb3pgrah0o01niohvi9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV10t-rhZxbs-I46bhWLo018knaIEuj4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961340522382-kboup8o64s54htb3pgrah0o01niohvi9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

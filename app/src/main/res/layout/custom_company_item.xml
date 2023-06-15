@@ -1,0 +1,82 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageProfile"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:layout_marginRight="25dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCompanyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bohadana"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/phoneId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+
+                    android:text="Phone Number : 053-125-5312"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Email: mrbeast@gmail.com"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <FrameLayout
+                    android:id="@+id/ratingBarContainer"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="238dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:numStars="5"
+                        android:layout_marginStart="-3dp"
+                        android:rating="0"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

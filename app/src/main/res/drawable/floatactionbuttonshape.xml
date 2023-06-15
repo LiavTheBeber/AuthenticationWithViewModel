@@ -1,0 +1,20 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background Circle -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#1AFF1D" /> <!-- Set the desired background color here -->
+            <size
+                android:width="48dp"
+                android:height="48dp" /> <!-- Set the desired width and height here -->
+        </shape>
+    </item>
+
+    <!-- Arrow -->
+    <item
+        android:drawable="@drawable/baseline_arrow_forward_24"
+        android:gravity="center"
+        android:width="45dp"
+        android:height="45dp" />
+
+</layer-list>

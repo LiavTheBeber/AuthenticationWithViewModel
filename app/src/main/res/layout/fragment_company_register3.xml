@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.companyRegister.CompanyRegisterFragment3"
+    android:background="#E1F5FE"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text="Upload a profile picture"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddProfPic"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="+"
+        android:textSize="30dp"
+        android:background="@drawable/addinfoshape"/>
+
+    <ImageView
+        android:id="@+id/company_profile_imageView"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text="Add extra pictures"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="(optional)"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddMorePics"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="+"
+        android:textSize="30dp"
+        android:background="@drawable/addinfoshape"/>
+
+    <HorizontalScrollView
+        android:layout_gravity="left"
+        android:layout_marginVertical="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/imageContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Add ImageViews for each image -->
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="125dp"
+                android:layout_height="125dp"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginHorizontal="25dp"
+            android:background="@drawable/floatbackarrow"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnProceed"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginHorizontal="25dp"
+            android:background="@drawable/floatactionbuttonshape"/>
+    </LinearLayout>
+
+</LinearLayout>
