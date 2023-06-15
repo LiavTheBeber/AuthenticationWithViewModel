@@ -541,11 +541,9 @@ public class AuthRepository
                     profilePic.getDownloadUrl().addOnSuccessListener(uri -> {
                         user.setProfilePic(uri);
                         normalUsers.add(user);
-                        Log.d("bob2", "getNormalItems: " + normalUsers);
                         int completedCount = completedTasks.incrementAndGet();
                         if (completedCount == totalTasks) {
                             // All profile pictures retrieved, invoke the callback
-                            Log.d("bob", "getNormalItems: " + normalUsers);
                             callback.onSuccess(normalUsers);
                         }
                     });
