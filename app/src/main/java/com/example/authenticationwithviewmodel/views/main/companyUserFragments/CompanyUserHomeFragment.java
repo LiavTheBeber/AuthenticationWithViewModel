@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.authenticationwithviewmodel.R;
@@ -19,6 +21,7 @@ import com.example.authenticationwithviewmodel.adapters.NormalItemAdapter;
 import com.example.authenticationwithviewmodel.sideClasses.CompanyUser;
 import com.example.authenticationwithviewmodel.sideClasses.User;
 import com.example.authenticationwithviewmodel.viewModel.MainViewModel;
+import com.example.authenticationwithviewmodel.viewModel.SharedViewModel;
 import com.example.authenticationwithviewmodel.views.main.userFragments.ViewNormalProfileFragment;
 
 import java.util.ArrayList;
@@ -31,10 +34,12 @@ public class CompanyUserHomeFragment extends Fragment {
     private NormalItemAdapter normalItemAdapter;
     private List<User> userItems;
     private ListView listViewItems;
+    private SharedViewModel sharedViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
     }
 
     @Override
@@ -55,19 +60,30 @@ public class CompanyUserHomeFragment extends Fragment {
         listViewItems.setAdapter(normalItemAdapter);
 
         mainViewModel.getSavedCompanyItems().observe(getViewLifecycleOwner(),companyItems->{
-            for (int i = 0;i<companyItems.size(); i++){
-                userItems.add(companyItems.get(i));
-            }
+            userItems.addAll(companyItems);
             normalItemAdapter.notifyDataSetChanged();
         });
 
+        listViewItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = (User) parent.getItemAtPosition(position);
+                sharedViewModel.setTransferredUser(user);
+                replaceFragment(new ViewNormalProfileFragment());
+            }
+        });
+
+
+
+
+
     }
 
-    public void navigateToViewNormalProfileFragment() {
-        ViewNormalProfileFragment viewNormalProfileFragment = new ViewNormalProfileFragment();
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(getId(), viewNormalProfileFragment)
+                .addToBackStack(null)
+                .replace(getId(), fragment)
                 .commit();
     }
 }

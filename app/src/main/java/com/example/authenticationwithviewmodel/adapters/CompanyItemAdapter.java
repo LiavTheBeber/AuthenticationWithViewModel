@@ -70,10 +70,6 @@ public class CompanyItemAdapter extends ArrayAdapter<CompanyUser> {
         Picasso.get().load(companyItem.getProfilePic()).into(viewHolder.profilePic);
 
 
-        convertView.setOnClickListener(v -> {
-            normalUserHomeFragment.navigateToViewCompanyProfileFragment();
-        });
-
         return convertView;
 
     }

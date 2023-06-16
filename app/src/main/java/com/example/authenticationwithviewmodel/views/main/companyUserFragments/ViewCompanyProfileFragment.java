@@ -1,66 +1,133 @@
 package com.example.authenticationwithviewmodel.views.main.companyUserFragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.authenticationwithviewmodel.R;
+import com.example.authenticationwithviewmodel.viewModel.SharedViewModel;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ViewCompanyProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
 public class ViewCompanyProfileFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ViewCompanyProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewCompanyProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ViewCompanyProfileFragment newInstance(String param1, String param2) {
-        ViewCompanyProfileFragment fragment = new ViewCompanyProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private SharedViewModel sharedViewModel;
+    private TextView tvName,tvPhone,tvEmail,tvBio,tvRating;
+    private RatingBar ratingBar;
+    private MapView mapView;
+    private GoogleMap mMap;
+    private CircleImageView profilePic;
+    private LinearLayout imageContainer;
+    private List<Uri> imagesUris;
+    private LatLng markerLatlng;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_company_profile, container, false);
+        View view =  inflater.inflate(R.layout.fragment_view_company_profile, container, false);
+        tvName = view.findViewById(R.id.tvCompanyName);
+        tvPhone = view.findViewById(R.id.phoneId);
+        tvEmail = view.findViewById(R.id.email);
+        tvBio = view.findViewById(R.id.textDescription);
+        tvRating = view.findViewById(R.id.rating_number);
+        ratingBar = view.findViewById(R.id.ratingBar);
+        mapView = view.findViewById(R.id.mapView);
+        profilePic = view.findViewById(R.id.imageProfile);
+        imageContainer = view.findViewById(R.id.imageContainer);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(callback);
+        return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updateTransferredCompanyUserData();
+    }
+
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+        @Override
+        public void onMapReady(@NonNull GoogleMap googleMap) {
+            mMap = googleMap;
+            if (markerLatlng!=null){
+                MarkerOptions markerOptions = new MarkerOptions().position(markerLatlng)
+                        .title("Your Business Location");
+                mMap.addMarker(markerOptions);
+
+                // Move the camera to the marker location
+                moveCameraAnimated(markerLatlng,7f);
+            }
+        }
+    };
+
+    private void moveCameraAnimated(LatLng latLng, float zoom) {
+        if (mMap != null) {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(latLng)
+                    .zoom(zoom)
+                    .build();
+
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+    }
+
+    private void updateTransferredCompanyUserData(){
+        sharedViewModel.getTransferredCompanyUser().observe(getViewLifecycleOwner(),transferredCompanyUser->{
+            Picasso.get().load(transferredCompanyUser.getProfilePic()).into(profilePic);
+            imagesUris = transferredCompanyUser.getExtraImages();
+            for (int i = 0; i < imagesUris.size(); i++) {
+                Uri imageUri = imagesUris.get(i);
+
+                ImageView imageView = new ImageView(requireContext());
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Picasso.get().load(imageUri).into(imageView);
+                // Add the ImageView to the container
+                imageContainer.addView(imageView);
+            }
+
+            tvName.setText("Company Name: " + transferredCompanyUser.getUsername());
+            tvPhone.setText("Phone: " + transferredCompanyUser.getPhone());
+            tvEmail.setText("Email: " + transferredCompanyUser.getEmail());
+            tvRating.setText(String.valueOf(transferredCompanyUser.getRatingBar()));
+            tvBio.setText(transferredCompanyUser.getBio());
+            ratingBar.setRating(transferredCompanyUser.getRatingBar());
+            markerLatlng = transferredCompanyUser.getLocation();
+            mapView.getMapAsync(callback);
+            mapView.onResume();
+
+
+        });
+    }
+
+
 }

@@ -458,13 +458,12 @@ public class AuthRepository
         });
     }
 
+
+
     public void getCompanyItems(OnNormalItemsDataCallback callback) {
         companyCollection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<CompanyUser> companyUsers = new ArrayList<>();
-
-                int totalTasks = task.getResult().size(); // Total number of documents
-                AtomicInteger completedTasks = new AtomicInteger(0); // Counter for completed tasks
 
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Retrieve document fields
@@ -484,6 +483,9 @@ public class AuthRepository
                     String profilePicPath = "companyUserImages/" + userId + "/profilePic";
                     StorageReference profilePic = storageRef.child(profilePicPath);
 
+                    String extraImagesPath = "companyUserImages/" + userId + "/extraImages/";
+                    StorageReference folderRef = storageRef.child(extraImagesPath);
+
                     CompanyUser companyUser = new CompanyUser(companyName, companyEmail, null, companyPhone,
                             companyBio, null, null, location, companyRatingBar, TAG);
 
@@ -491,13 +493,29 @@ public class AuthRepository
                     profilePic.getDownloadUrl().addOnSuccessListener(uri -> {
                         Log.d("uriExist", "getNormalCompanyItems: " + uri);
                         companyUser.setProfilePic(uri);
-                        companyUsers.add(companyUser);
 
-                        int completedCount = completedTasks.incrementAndGet();
-                        if (completedCount == totalTasks) {
-                            // All profile pictures retrieved, invoke the callback
-                            callback.onSuccess(companyUsers);
-                        }
+                        List<Uri> extraImagesUri = new ArrayList<>();
+                        folderRef.listAll()
+                                .addOnSuccessListener(listResult -> {
+                                    // Iterate over the items (files) in the folder
+                                    for (StorageReference item : listResult.getItems()) {
+                                        // Get the download URL for each item
+                                        item.getDownloadUrl().addOnSuccessListener(extraImageUri ->
+                                        {
+                                            // Add the URI to the list
+                                            extraImagesUri.add(extraImageUri);
+
+                                            if (extraImagesUri.size() == listResult.getItems().size()){
+                                                companyUser.setExtraImages(extraImagesUri);
+                                                companyUsers.add(companyUser);
+                                                callback.onSuccess(companyUsers);
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
                     });
                 }
             } else {
@@ -512,8 +530,6 @@ public class AuthRepository
             if (task.isSuccessful()) {
                 List<User> normalUsers = new ArrayList<>();
 
-                int totalTasks = task.getResult().size(); // Total number of documents
-                AtomicInteger completedTasks = new AtomicInteger(0); // Counter for completed tasks
 
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Retrieve document fields
@@ -533,6 +549,9 @@ public class AuthRepository
                     String profilePicPath = "normalUserImages/" + userId + "/profilePic";
                     StorageReference profilePic = storageRef.child(profilePicPath);
 
+                    String extraImagesPath = "normalUserImages/" + userId + "/extraImages/";
+                    StorageReference folderRef = storageRef.child(extraImagesPath);
+
                     User user = new User(normalEmail, null, normalFirstName, normalSurname,
                             normalPhone, normalCity, normalBirthdate,normalGender,null,null,null,normalLifeResume
                             ,null,null,TAG);
@@ -540,12 +559,26 @@ public class AuthRepository
 
                     profilePic.getDownloadUrl().addOnSuccessListener(uri -> {
                         user.setProfilePic(uri);
-                        normalUsers.add(user);
-                        int completedCount = completedTasks.incrementAndGet();
-                        if (completedCount == totalTasks) {
-                            // All profile pictures retrieved, invoke the callback
-                            callback.onSuccess(normalUsers);
-                        }
+
+                        List<Uri> extraImagesUri = new ArrayList<>();
+                        folderRef.listAll()
+                                .addOnSuccessListener(listResult -> {
+                                    // Iterate over the items (files) in the folder
+                                    for (StorageReference item : listResult.getItems()) {
+                                        // Get the download URL for each item
+                                        item.getDownloadUrl().addOnSuccessListener(extraImageUri ->
+                                        {
+                                            // Add the URI to the list
+                                            extraImagesUri.add(extraImageUri);
+
+                                            if (extraImagesUri.size() == listResult.getItems().size()){
+                                                user.setExtraImages(extraImagesUri);
+                                                normalUsers.add(user);
+                                                callback.onSuccess(normalUsers);
+                                            }
+                                        });
+                                    }
+                                });
                     });
                 }
             } else {
@@ -554,8 +587,6 @@ public class AuthRepository
             }
         });
     }
-
-
 }
 
 

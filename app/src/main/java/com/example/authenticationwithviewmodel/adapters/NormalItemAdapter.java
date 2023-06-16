@@ -8,11 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.authenticationwithviewmodel.R;
 import com.example.authenticationwithviewmodel.sideClasses.CompanyUser;
 import com.example.authenticationwithviewmodel.sideClasses.User;
 import com.example.authenticationwithviewmodel.views.main.companyUserFragments.CompanyUserHomeFragment;
 import com.example.authenticationwithviewmodel.views.main.userFragments.NormalUserHomeFragment;
+import com.example.authenticationwithviewmodel.views.main.userFragments.ViewNormalProfileFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,6 +29,7 @@ public class NormalItemAdapter extends ArrayAdapter<User> {
     }
 
     CompanyUserHomeFragment companyUserHomeFragment;
+    ViewNormalProfileFragment viewNormalProfileFragment = new ViewNormalProfileFragment();
 
     public NormalItemAdapter(Context context, List<User> userItems,CompanyUserHomeFragment companyUserHomeFragment){
         super(context,0,userItems);
@@ -57,13 +61,11 @@ public class NormalItemAdapter extends ArrayAdapter<User> {
         viewHolder.tvSurname.setText(userItem.getSurname());
         viewHolder.tvPhone.setText(userItem.getPhone());
         viewHolder.tvEmail.setText(userItem.getEmail());
-        viewHolder.tvGender.setText(userItem.getEmail());
+        viewHolder.tvGender.setText(userItem.getGender());
         viewHolder.profilePic.setImageURI(userItem.getProfilePic());
         Picasso.get().load(userItem.getProfilePic()).into(viewHolder.profilePic);
 
-        convertView.setOnClickListener(v -> {
-            companyUserHomeFragment.navigateToViewNormalProfileFragment();
-        });
+
 
         return convertView;
     }

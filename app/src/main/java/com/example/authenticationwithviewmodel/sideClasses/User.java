@@ -5,10 +5,13 @@ import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class User {
+
+
 
     private String email,password,FirstName,Surname,phone,city,lifeResume,TAG,gender;
     private Boolean isMale,isFemale,isOther;
