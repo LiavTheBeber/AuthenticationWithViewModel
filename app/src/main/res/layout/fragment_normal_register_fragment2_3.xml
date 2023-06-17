@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
 
@@ -28,7 +28,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:max="100"
-            android:progress="33"
+            android:progress="66"
             android:secondaryProgress="0"
             android:progressDrawable="@drawable/progressbarshape" />
 

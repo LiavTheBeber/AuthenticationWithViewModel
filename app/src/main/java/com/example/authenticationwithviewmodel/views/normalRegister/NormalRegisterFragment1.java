@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,7 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class NormalRegisterFragment1 extends Fragment implements AuthViewModel.FragmentCallback {
 
-    private FloatingActionButton btnNext,btnBack;
+    private AppCompatButton btnNext,btnBack;
     private TextInputEditText etRegEmail,etRegPass,etRegConfirmPass;
     private AuthViewModel authViewModel;
 

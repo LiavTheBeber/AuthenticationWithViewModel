@@ -9,20 +9,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.authenticationwithviewmodel.R;
 import com.example.authenticationwithviewmodel.viewModel.AuthViewModel;
 import com.example.authenticationwithviewmodel.views.companyRegister.CompanyRegisterFragment3;
+import com.example.authenticationwithviewmodel.views.normalRegister.resume.NormalRegisterFragment2_2;
+import com.example.authenticationwithviewmodel.views.normalRegister.resume.NormalRegisterFragment2_3;
 
 public class NormalRegisterFragment3 extends Fragment implements AuthViewModel.FragmentCallback{
     private AppCompatButton btnBack,btnFinish;
     private CheckBox acceptTermsCheckBox;
     private AuthViewModel authViewModel;
+    private TextView termsTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,9 @@ public class NormalRegisterFragment3 extends Fragment implements AuthViewModel.F
         btnBack = view.findViewById(R.id.btnBack);
         btnFinish = view.findViewById(R.id.btnFinish);
         acceptTermsCheckBox = view.findViewById(R.id.checkbox_terms);
+        termsTextView  = view.findViewById(R.id.terms_of_service_text);
+
+        termsTextView.setMovementMethod(new ScrollingMovementMethod());
         return view;
     }
 
@@ -47,13 +55,13 @@ public class NormalRegisterFragment3 extends Fragment implements AuthViewModel.F
         super.onViewCreated(view, savedInstanceState);
 
         btnBack.setOnClickListener(v -> {
-            replaceFragment(new CompanyRegisterFragment3());
+            replaceFragment(new NormalRegisterFragment2_3());
         });
 
         btnFinish.setOnClickListener(v -> {
             if (acceptTermsCheckBox.isChecked()){
                 Boolean IsTermsAccepted = acceptTermsCheckBox.isChecked();
-                String TAG = "normalTAG";
+                String TAG = "normalUser";
                 authViewModel.saveThirdPageNormalUserCredentials(IsTermsAccepted,TAG);
                 authViewModel.registerUser(requireContext());
             }

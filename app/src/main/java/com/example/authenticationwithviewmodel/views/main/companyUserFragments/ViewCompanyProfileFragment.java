@@ -84,7 +84,7 @@ public class ViewCompanyProfileFragment extends Fragment {
                 mMap.addMarker(markerOptions);
 
                 // Move the camera to the marker location
-                moveCameraAnimated(markerLatlng,7f);
+                moveCameraAnimated(markerLatlng,15f);
             }
         }
     };

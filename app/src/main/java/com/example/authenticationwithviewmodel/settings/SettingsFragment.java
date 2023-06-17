@@ -85,10 +85,10 @@ public class SettingsFragment extends Fragment {
     private void AddItems(){
         settingItems.add(new SettingsItem(R.drawable.baseline_person_24,"Account"));
         settingItems.add(new SettingsItem(R.drawable.baseline_notifications_24,"Notifications"));
-        settingItems.add(new SettingsItem(R.drawable.baseline_remove_red_eye_24,"Appearance"));
+        //settingItems.add(new SettingsItem(R.drawable.baseline_remove_red_eye_24,"Appearance"));
         settingItems.add(new SettingsItem(R.drawable.baseline_security_24,"Security"));
-        settingItems.add(new SettingsItem(R.drawable.baseline_support_agent_24,"Support"));
-        settingItems.add(new SettingsItem(R.drawable.baseline_help_outline_24,"About"));
+        //settingItems.add(new SettingsItem(R.drawable.baseline_support_agent_24,"Support"));
+        //settingItems.add(new SettingsItem(R.drawable.baseline_help_outline_24,"About"));
         settingsItemAdapter.notifyDataSetChanged();
     }
 

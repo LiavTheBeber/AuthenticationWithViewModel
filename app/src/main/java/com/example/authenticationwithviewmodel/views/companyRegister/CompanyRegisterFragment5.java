@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.authenticationwithviewmodel.R;
@@ -23,6 +25,7 @@ public class CompanyRegisterFragment5 extends Fragment implements AuthViewModel.
     private AppCompatButton btnBack,btnFinish;
     private CheckBox acceptTermsCheckBox;
     private AuthViewModel authViewModel;
+    private TextView termsTv;
 
 
     @Override
@@ -40,6 +43,9 @@ public class CompanyRegisterFragment5 extends Fragment implements AuthViewModel.
         btnBack = view.findViewById(R.id.btnBack);
         btnFinish = view.findViewById(R.id.btnFinish);
         acceptTermsCheckBox = view.findViewById(R.id.checkbox_terms);
+        termsTv = view.findViewById(R.id.terms_of_service_text);
+
+        termsTv.setMovementMethod(new ScrollingMovementMethod());
         return view;
     }
     @Override
@@ -53,7 +59,7 @@ public class CompanyRegisterFragment5 extends Fragment implements AuthViewModel.
         btnFinish.setOnClickListener(v -> {
             if (acceptTermsCheckBox.isChecked()){
                 Boolean IsTermsAccepted = acceptTermsCheckBox.isChecked();
-                String TAG = "companyTAG";
+                String TAG = "companyUser";
                 authViewModel.saveFifthPageCompanyCredentials(IsTermsAccepted,TAG);
                 authViewModel.registerCompanyUser(requireContext());
             }

@@ -108,7 +108,7 @@ public class SettingsAccountFragmentCompany extends Fragment {
             accountItemAdapter.notifyDataSetChanged();
         });
         mainViewModel.getSavedBioCompany().observe(getViewLifecycleOwner(),companyBio->{
-            accountItems.add(new AccountItem("Company Bio",companyBio));
+            accountItems.add(new AccountItem("Company Bio","Click To Change Bio"));
             accountItemAdapter.notifyDataSetChanged();
         });
         mainViewModel.getSavedPhoneCompany().observe(getViewLifecycleOwner(),companyPhone->{
