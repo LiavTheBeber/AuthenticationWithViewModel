@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.authenticationwithviewmodel.R;
-import com.example.authenticationwithviewmodel.sideClasses.MilitaryDialog;
 import com.example.authenticationwithviewmodel.viewModel.AuthViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
