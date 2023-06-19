@@ -3,7 +3,11 @@ package com.example.authenticationwithviewmodel.views.companyRegister;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -18,10 +22,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EdgeEffect;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.authenticationwithviewmodel.R;
@@ -39,6 +50,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.FragmentCallback {
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -49,6 +64,8 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
     private Boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLng markerLatlng;
+    private EditText etSearchText;
+    private float DefaultZoom = 15f;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,10 +81,12 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
         View view =  inflater.inflate(R.layout.fragment_company_register4, container, false);
         btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
         mapView = view.findViewById(R.id.mapView);
+        etSearchText = view.findViewById(R.id.input_search);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(callback);
         return view;
     }
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,6 +95,37 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
         btnSaveLocation.setOnClickListener(v -> {
             authViewModel.saveFourthPageCompanyCredentials(markerLatlng);
         });
+
+        etSearchText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE
+            || event.getAction() == KeyEvent.ACTION_DOWN
+            || event.getAction() == KeyEvent.KEYCODE_ENTER)
+                //  execute our method for searching
+                hideSoftKeyboard();
+                geoLocate();
+            return false;
+        });
+    }
+
+    private void geoLocate() {
+        String searchString = etSearchText.getText().toString();
+
+        Geocoder geocoder = new Geocoder(requireContext());
+        List<Address> list = new ArrayList<>();
+
+        try {
+            list = geocoder.getFromLocationName(searchString,1);
+        }catch (IOException e){
+            Log.e("geoLocate: IOException", "geoLocate: IOException" + e.getMessage());
+        }
+
+        if (list.size() > 0){
+            Address address = list.get(0);
+            Log.d("geoLocate: found a location", "geoLocate: found a location" + address.toString());
+
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DefaultZoom);
+
+        }
 
     }
 
@@ -108,6 +158,15 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
 
         }
     };
+
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
+    }
+
+
 
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
@@ -163,12 +222,6 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
                             initMap();
                         }
                     });
-    private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
-        }
-    }
     private void moveCamera(LatLng latLng, float zoom) {
         if (mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
@@ -185,15 +238,13 @@ public class CompanyRegisterFragment4 extends Fragment implements AuthViewModel.
         }
     }
 
-
-
-
-
-
-
-
-
-
+    private void hideSoftKeyboard(){
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocusView = requireActivity().getCurrentFocus();
+        if (imm != null && currentFocusView != null) {
+            imm.hideSoftInputFromWindow(currentFocusView.getWindowToken(), 0);
+        }
+    }
 
 
 

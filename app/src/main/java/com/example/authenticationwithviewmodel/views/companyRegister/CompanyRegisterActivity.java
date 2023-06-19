@@ -14,7 +14,7 @@ public class CompanyRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_register);
 
-        replaceFragment(new CompanyRegisterFragment1());
+        replaceFragment(new CompanyRegisterFragment4());
     }
 
     private void replaceFragment(Fragment fragment) {
